@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Academy Plan">
+<meta name="theme-color" content="#1F3864">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231F3864'/%3E%3Ctext x='50' y='62' font-size='46' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E">
+<title>Academy Readiness Plan</title>
+<style>
+  :root{
+    --navy:#1F3864; --accent:#2E5C8A; --light:#DCE6F1; --grey:#595959;
+    --bg:#F4F6F9; --card:#FFFFFF; --good:#1B7A3D; --warn:#9C5700; --danger:#B3261E;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1a1a1a;}
+  body{padding-bottom:78px;}
+  header{background:var(--navy);color:#fff;padding:18px 16px 14px;position:sticky;top:0;z-index:10;}
+  header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.2px;}
+  header .sub{font-size:12px;opacity:.85;margin-top:3px;}
+  main{padding:14px 14px 10px;max-width:520px;margin:0 auto;}
+  .card{background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--accent);font-weight:700;}
+  .card h3{margin:12px 0 6px;font-size:13px;color:var(--grey);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .card p{margin:4px 0;font-size:14px;line-height:1.45;}
+  .pill{display:inline-block;background:var(--light);color:var(--navy);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:8px;}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #eee;font-size:14px;}
+  .row:last-child{border-bottom:none;}
+  .row .l{flex:1;}
+  .row .r{color:var(--grey);font-size:13px;white-space:nowrap;}
+  .exlist label{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #eee;font-size:14px;cursor:pointer;}
+  .exlist label:last-child{border-bottom:none;}
+  .exlist input[type=checkbox]{width:19px;height:19px;flex-shrink:0;accent-color:var(--accent);}
+  .exlist .exname{flex:1;}
+  .exlist .exname.done{text-decoration:line-through;color:#9a9a9a;}
+  .exlist .exreps{color:var(--grey);font-size:12.5px;white-space:nowrap;}
+  .note{background:#FFF7E8;border-left:3px solid var(--warn);padding:8px 10px;border-radius:6px;font-size:12.5px;color:#7a4c00;margin-top:8px;}
+  .goalrow{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid #eee;}
+  .goalrow:last-child{border-bottom:none;}
+  .goalrow .name{font-size:13.5px;color:#333;}
+  .goalrow .nums{font-size:14px;font-weight:700;color:var(--navy);}
+  .progbar{height:7px;background:#e9edf3;border-radius:5px;overflow:hidden;margin-top:4px;}
+  .progbar>div{height:100%;background:var(--accent);}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table th{background:var(--navy);color:#fff;text-align:left;padding:7px 8px;font-size:11.5px;}
+  table td{padding:7px 8px;border-bottom:1px solid #eee;}
+  table tr:nth-child(even) td{background:#F7F9FC;}
+  .formrow{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .formrow input{flex:1;min-width:70px;padding:9px 10px;border:1px solid #d5dbe3;border-radius:9px;font-size:14px;}
+  button.primary{width:100%;padding:11px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:14.5px;font-weight:700;}
+  .hist{margin-top:10px;}
+  .hist .row .l{font-size:13px;color:#333;}
+  nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e4e4e4;display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20;}
+  nav button{flex:1;background:none;border:none;padding:9px 2px 8px;font-size:10.5px;color:#8a8f98;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  nav button.active{color:var(--navy);}
+  nav .icon{font-size:19px;}
+  .tabpage{display:none;}
+  .tabpage.active{display:block;}
+  .empty{color:#9a9a9a;font-size:13px;text-align:center;padding:10px 0;}
+  .list-tight li{margin-bottom:6px;font-size:13.5px;line-height:1.4;}
+  ul.list-tight{margin:6px 0;padding-left:18px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .statbox{background:var(--light);border-radius:10px;padding:10px;text-align:center;}
+  .statbox .v{font-size:18px;font-weight:800;color:var(--navy);}
+  .statbox .k{font-size:10.5px;color:var(--grey);margin-top:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="headerTitle">Academy Readiness Plan</h1>
+  <div class="sub" id="headerSub">Loading…</div>
+</header>
+
+<main>
+
+  <!-- TODAY -->
+  <section class="tabpage active" id="tab-today">
+    <div class="card" id="phaseCard"></div>
+    <div class="card" id="todayCard"></div>
+    <div class="card" id="nutritionTodayCard"></div>
+  </section>
+
+  <!-- WEEK -->
+  <section class="tabpage" id="tab-week">
+    <div class="card" id="weekCard"></div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="tabpage" id="tab-progress">
+    <div class="card">
+      <h2>Log an entry</h2>
+      <div class="formrow">
+        <input type="number" step="0.1" id="inWeight" placeholder="Weight (lb)">
+        <input type="number" id="inPushups" placeholder="Push-ups (max)">
+      </div>
+      <div class="formrow">
+        <input type="number" id="inSitups" placeholder="Sit-ups (1 min)">
+        <input type="text" id="inRun" placeholder="1.5mi time (mm:ss)">
+      </div>
+      <button class="primary" onclick="addEntry()">Save entry</button>
+    </div>
+    <div class="card">
+      <h2>Where you stand</h2>
+      <div class="grid2" id="statGrid"></div>
+    </div>
+    <div class="card">
+      <h2>History</h2>
+      <div class="hist" id="histList"></div>
+    </div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="tabpage" id="tab-plan">
+    <div class="card">
+      <h2>Goals</h2>
+      <div id="goalsList"></div>
+    </div>
+    <div class="card">
+      <h2>Phase Timeline</h2>
+      <table><thead><tr><th>Phase</th><th>Dates</th></tr></thead><tbody id="phaseTable"></tbody></table>
+    </div>
+    <div class="card">
+      <h2>Nutrition by Phase</h2>
+      <table><thead><tr><th>Phase</th><th>Target</th><th>Protein</th></tr></thead><tbody id="nutriTable"></tbody></table>
+    </div>
+    <div class="card">
+      <h2>Supplements</h2>
+      <p><b>Creatine</b> — 5g/day, every day. Confirm with your surgeon before starting.</p>
+      <p><b>Protein powder</b> — 1–2 scoops/day as needed to hit protein target.</p>
+      <div class="note">Hold off on any new supplement in the week before surgery (7/17) without surgeon sign-off.</div>
+    </div>
+    <div class="card">
+      <h2>ACL-Safe Knee Rules</h2>
+      <h3>Prefer</h3>
+      <ul class="list-tight">
+        <li>Leg press (controlled depth), leg extension/curl</li>
+        <li>Hip thrusts, glute bridges, Nordic hamstring curls</li>
+        <li>Low step-ups, bike, elliptical, swimming</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul class="list-tight">
+        <li>Box jumps, pivoting/cutting, agility-ladder drills</li>
+        <li>Deep loaded back squats, heavy lunges</li>
+        <li>Running on trails/uneven terrain</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Return-to-Running (from ~Oct 10)</h2>
+      <table><thead><tr><th>Weeks</th><th>Session</th></tr></thead><tbody id="runTable"></tbody></table>
+    </div>
+  </section>
+
+</main>
+
+<nav>
+  <button class="active" data-tab="today" onclick="showTab('today')"><span class="icon">📋</span>Today</button>
+  <button data-tab="week" onclick="showTab('week')"><span class="icon">🗓️</span>Week</button>
+  <button data-tab="progress" onclick="showTab('progress')"><span class="icon">📈</span>Progress</button>
+  <button data-tab="plan" onclick="showTab('plan')"><span class="icon">📖</span>Plan</button>
+</nav>
+
+<script>
+/* ---------- SAFE STORAGE (falls back to in-memory if localStorage is blocked) ---------- */
+const safeStorage = (function(){
+  try{
+    const k="__t__"; window.localStorage.setItem(k,"1"); window.localStorage.removeItem(k);
+    return window.localStorage;
+  }catch(e){
+    console.warn("localStorage unavailable, using in-memory fallback:", e);
+    const mem={};
+    return{
+      getItem:(key)=> (key in mem ? mem[key] : null),
+      setItem:(key,val)=>{ mem[key]=String(val); },
+      removeItem:(key)=>{ delete mem[key]; }
+    };
+  }
+})();
+
+/* ---------- DATA ---------- */
+const PHASES = [
+  {id:0,name:"Pre-Op Prep",start:"2026-07-11",end:"2026-07-16"},
+  {id:1,name:"Post-Op Protected",start:"2026-07-17",end:"2026-08-28"},
+  {id:2,name:"Post-Op Transition",start:"2026-08-29",end:"2026-10-09"},
+  {id:3,name:"Return to Running",start:"2026-10-10",end:"2026-12-04"},
+  {id:4,name:"Peak & Taper",start:"2026-12-05",end:"2027-01-31"},
+];
+
+const SESSIONS = {
+  fullBody:{title:"Full-Body Strength",ex:[
+    ["Back Squat (pain-free depth)","3 x 8"],
+    ["Flat Bench Press","4 x 8"],
+    ["Bent-Over Row","3 x 10"],
+    ["Standing DB Shoulder Press","3 x 10"],
+    ["Romanian Deadlift","3 x 10"],
+    ["Plank","3 x 45 sec"],
+  ],note:"Moderate loads — leave 2–3 reps in reserve."},
+  upperPush:{title:"Upper Push + Push-Up Work",ex:[
+    ["Flat DB/Barbell Bench Press","4 x 8–10"],
+    ["Seated DB Shoulder Press","3 x 10"],
+    ["Incline DB Press","3 x 10"],
+    ["Triceps Rope Pressdown","3 x 12–15"],
+    ["DB Lateral Raise","3 x 15"],
+  ],note:"Push-up block (volume day): 5 sets to a hard-but-clean stop (~70% max), 90s rest."},
+  upperPull:{title:"Upper Pull + Push-Up Work",ex:[
+    ["Lat Pulldown / Assisted Pull-up","4 x 8–10"],
+    ["Seated Cable Row","3 x 10"],
+    ["Single-Arm DB Row","3 x 10/side"],
+    ["Face Pull","3 x 15"],
+    ["DB/Barbell Curl","3 x 12"],
+  ],note:"Push-up block (strength day): weighted/deficit or slow-tempo push-ups, 4–5 sets of 6–10."},
+  upperPushProg:{title:"Upper Push (progressed)",ex:[
+    ["Flat Bench Press","4 x 6–8 (heavier)"],
+    ["Standing Overhead Press","3 x 8"],
+    ["Weighted Dips","3 x 8–10"],
+    ["Incline DB Press","3 x 10"],
+    ["Triceps Pressdown","3 x 12"],
+  ],note:"Push-up block: peaking — full test-condition attempt every 1–2 weeks."},
+  upperPullProg:{title:"Upper Pull (progressed)",ex:[
+    ["Weighted Pull-ups / Lat Pulldown","4 x 6–8"],
+    ["Barbell or Seated Row","3 x 8–10"],
+    ["Single-Arm DB Row","3 x 10/side"],
+    ["Face Pull","3 x 15"],
+    ["DB Curl","3 x 12"],
+  ],note:""},
+  coreInterval:{title:"Core — Sit-Up Interval Day",ex:[
+    ["Sit-up intervals: 20s max pace","6–8 rounds, 40s rest"],
+    ["Cable/Machine Crunch","3 x 15"],
+    ["Plank","3 x 40 sec"],
+    ["Dead Bug","3 x 12/side"],
+    ["Bird-Dog","3 x 10/side"],
+  ],note:"Use a metronome (~1.5s/rep) to build test-day cadence."},
+  coreEndurance:{title:"Core — Endurance Day",ex:[
+    ["Plank holds","3 x 45–60 sec"],
+    ["Hanging or Lying Leg Raise","3 x 12"],
+    ["Weighted Crunch","3 x 15"],
+    ["Light upper accessory (optional)","2 x 15"],
+  ],note:"Builds the ab/hip-flexor endurance that fades late in the 1-minute test."},
+  restArmBike:{title:"Rest / Optional Arm-Bike",ex:[],note:"Rest, or light arm-bike / upper-body ergometer if available. Confirm any activity with your surgeon during weeks 1–2."},
+  optionalMobility:{title:"Optional Mobility",ex:[],note:"Light mobility work, seated cardio, or a walk — only as cleared by your surgeon."},
+  restMobility:{title:"Rest / Mobility",ex:[],note:"Light stretching and foam rolling."},
+  rest:{title:"Rest Day",ex:[],note:""},
+  lowerLight:{title:"Lower Body (Light) + Core",ex:[
+    ["Leg Press (light-moderate, controlled)","3 x 12"],
+    ["Leg Extension","3 x 12"],
+    ["Seated/Lying Leg Curl","3 x 12"],
+    ["Glute Bridge","3 x 15"],
+    ["Seated Calf Raise (as tolerated)","3 x 15"],
+    ["Plank","3 x 45 sec"],
+  ],note:"Start light — let pain-free tolerance set the load, not this table."},
+  lowerFull:{title:"Lower Body (Full, ACL-Safe) + Core",ex:[
+    ["Leg Press","4 x 8–10"],
+    ["Romanian Deadlift","3 x 8–10"],
+    ["Leg Extension","3 x 12"],
+    ["Nordic Hamstring Curl (or lying curl)","3 x 6–8"],
+    ["Hip Thrust","3 x 10"],
+    ["Standing Calf Raise","3 x 15"],
+  ],note:"Add today's sit-up block (interval or endurance) after this session."},
+  bikeSitup:{title:"Bike/Elliptical + Sit-Up Work",ex:[
+    ["Bike or elliptical, easy pace","20–30 min"],
+  ],note:"Follow with the sit-up interval block."},
+  bikeEasy:{title:"Bike/Elliptical, Easy",ex:[
+    ["Bike or elliptical, easy pace","20–30 min"],
+  ],note:""},
+};
+
+// weekly maps: JS getDay() 0=Sun..6=Sat
+const WEEKS = {
+  0:{1:"fullBody",3:"fullBody",5:"fullBody",0:"rest",2:"rest",4:"rest",6:"rest"},
+  1:{1:"upperPush",2:"coreInterval",3:"restArmBike",4:"upperPull",5:"coreEndurance",6:"optionalMobility",0:"rest"},
+  2:{1:"upperPush",2:"lowerLight",3:"bikeSitup",4:"upperPull",5:"lowerLight",6:"bikeEasy",0:"rest"},
+  3:{1:"upperPush",2:"lowerFull",3:"run",4:"upperPull",5:"lowerFull",6:"run",0:"restMobility"},
+  4:{1:"upperPushProg",2:"lowerFull",3:"run",4:"upperPullProg",5:"lowerFull",6:"run",0:"restMobility"},
+};
+const DAY_NAMES=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+const RUN_TABLE = [
+  [13,14,"Brisk walking only, building to 30–40 continuous minutes"],
+  [15,16,"Walk/jog intervals: 30 sec jog / 90 sec walk × 8–10"],
+  [17,18,"Walk/jog intervals: 2 min jog / 1 min walk × 6–8"],
+  [19,20,"Continuous easy jog building to 1.5–2 miles"],
+  [21,24,"Add one tempo/pace session per week at goal 1.5-mile pace"],
+  [25,29,"Maintain mileage; sharpen pace; occasional full test-condition time trial"],
+];
+
+const NUTRITION = [
+  {phase:"1 – Low activity",target:"1,950–2,000 kcal",protein:"185–195 g"},
+  {phase:"2 – Light-moderate",target:"2,200–2,300 kcal",protein:"185–195 g"},
+  {phase:"3 – Moderate-high",target:"2,500–2,600 kcal",protein:"190–200 g"},
+  {phase:"4 – High / taper",target:"2,600–2,700 kcal (2,300–2,400 final 4–6 wks)",protein:"190–200 g"},
+];
+
+const GOALS = [
+  {name:"Weight → scan-recommended",cur:194.8,goal:183.6,unit:"lb",lowerBetter:true},
+  {name:"Push-ups (max)",cur:35,goal:50,unit:"",lowerBetter:false},
+  {name:"Sit-ups (1 min)",cur:29,goal:40,unit:"",lowerBetter:false},
+  {name:"1.5-mile run",cur:"14:00",goal:"~12:00",unit:"",lowerBetter:null},
+];
+
+/* ---------- DATE HELPERS ---------- */
+function parseISO(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
+function todayDate(){
+  const override = safeStorage.getItem("__dateOverride");
+  return override ? parseISO(override) : new Date(new Date().toDateString());
+}
+function fmt(d){return d.toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"});}
+function currentPhase(d){
+  for(const p of PHASES){ if(d>=parseISO(p.start) && d<=parseISO(p.end)) return p; }
+  if(d < parseISO(PHASES[0].start)) return PHASES[0];
+  return null; // past Phase 4 -> Academy time
+}
+function weekOfPhase3(d){
+  const start = parseISO("2026-10-10");
+  const diffDays = Math.floor((d-start)/86400000);
+  return 13 + Math.floor(diffDays/7);
+}
+function runSessionForWeek(wk){
+  for(const [a,b,txt] of RUN_TABLE){ if(wk>=a && wk<=b) return txt; }
+  return wk<13 ? "Not started yet." : "Maintain mileage; sharpen pace.";
+}
+
+/* ---------- RENDER ---------- */
+function renderHeader(d,phase){
+  document.getElementById("headerSub").textContent = fmt(d) + (phase ? " · Phase "+phase.id+" — "+phase.name : " · Academy prep complete");
+}
+function renderPhaseCard(phase){
+  const el=document.getElementById("phaseCard");
+  if(!phase){
+    el.innerHTML = `<span class="pill">ACADEMY TIME</span><p>You're past Jan 31 — Academy has started. Keep push-ups, sit-ups, and running sharp and hold your nutrition.</p>`;
+    return;
+  }
+  const s=parseISO(phase.start), e=parseISO(phase.end);
+  const tot=(e-s)/86400000+1, done=Math.min(tot,Math.max(0,(todayDate()-s)/86400000+1));
+  const pct=Math.round(done/tot*100);
+  el.innerHTML = `<span class="pill">PHASE ${phase.id} · ${phase.name.toUpperCase()}</span>
+    <p>${phase.start} → ${phase.end}</p>
+    <div class="progbar"><div style="width:${pct}%"></div></div>`;
+}
+function renderToday(d,phase){
+  const el=document.getElementById("todayCard");
+  if(!phase){ el.innerHTML = `<h2>Today</h2><p class="empty">No scheduled session — maintenance mode.</p>`; return; }
+  const dow=d.getDay();
+  let key = WEEKS[phase.id][dow];
+  let block = SESSIONS[key];
+  let extra = "";
+  if(key==="run"){
+    const wk = weekOfPhase3(d);
+    block = {title:"Run Progression (week "+wk+")", ex:[], note: runSessionForWeek(wk)};
+  }
+  const dateKey = d.toISOString().slice(0,10);
+  let html = `<h2>Today — ${block.title}</h2>`;
+  if(block.ex.length){
+    html += `<div class="exlist">`;
+    block.ex.forEach((row,i)=>{
+      const id = "chk_"+dateKey+"_"+key+"_"+i;
+      const checked = safeStorage.getItem(id)==="1" ? "checked" : "";
+      html += `<label><input type="checkbox" id="${id}" ${checked} onchange="toggleChk('${id}',this)">
+        <span class="exname ${checked?'done':''}" id="name_${id}">${row[0]}</span>
+        <span class="exreps">${row[1]}</span></label>`;
+    });
+    html += `</div>`;
+  }
+  if(block.note) html += `<div class="note">${block.note}</div>`;
+  el.innerHTML = html;
+}
+function toggleChk(id,cb){
+  safeStorage.setItem(id, cb.checked ? "1":"0");
+  document.getElementById("name_"+id).classList.toggle("done", cb.checked);
+}
+function renderNutritionToday(phase){
+  const el=document.getElementById("nutritionTodayCard");
+  if(!phase){ el.innerHTML=""; return; }
+  const n = NUTRITION[Math.max(0,Math.min(3,phase.id-1))] || NUTRITION[0];
+  el.innerHTML = `<h2>Today's Nutrition Target</h2>
+    <div class="row"><span class="l">Calories</span><span class="r">${phase.id===0?"~2,470 kcal (maintenance, pre-op)":n.target}</span></div>
+    <div class="row"><span class="l">Protein</span><span class="r">${phase.id===0?"175–185 g":n.protein}</span></div>
+    <div class="row"><span class="l">Creatine</span><span class="r">5g/day</span></div>`;
+}
+function renderWeek(d,phase){
+  const el=document.getElementById("weekCard");
+  if(!phase){ el.innerHTML=`<h2>This Week</h2><p class="empty">Academy phase — freestyle maintenance.</p>`; return; }
+  const map = WEEKS[phase.id];
+  let html = `<h2>Phase ${phase.id} — Weekly Pattern</h2>`;
+  for(let dow=1; dow<=6; dow++){ html+=weekRow(dow,map,phase); }
+  html+=weekRow(0,map,phase);
+  el.innerHTML = html;
+}
+function weekRow(dow,map,phase){
+  const key = map[dow];
+  let title = SESSIONS[key] ? SESSIONS[key].title : key;
+  if(key==="run") title = "Run Progression";
+  const isToday = dow === todayDate().getDay();
+  return `<div class="row" style="${isToday?'font-weight:700;color:var(--navy)':''}">
+    <span class="l">${DAY_NAMES[dow]}${isToday?' (today)':''}</span>
+    <span class="r">${title}</span></div>`;
+}
+function renderPlanStatics(){
+  document.getElementById("phaseTable").innerHTML = PHASES.map(p=>
+    `<tr><td>${p.id} – ${p.name}</td><td>${p.start} → ${p.end}</td></tr>`).join("");
+  document.getElementById("nutriTable").innerHTML = NUTRITION.map(n=>
+    `<tr><td>${n.phase}</td><td>${n.target}</td><td>${n.protein}</td></tr>`).join("");
+  document.getElementById("runTable").innerHTML = RUN_TABLE.map(r=>
+    `<tr><td>${r[0]}–${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+  document.getElementById("goalsList").innerHTML = GOALS.map(g=>
+    `<div class="goalrow"><span class="name">${g.name}</span><span class="nums">${g.cur}${g.unit} → ${g.goal}${g.unit}</span></div>`).join("");
+}
+
+/* ---------- PROGRESS LOG ---------- */
+function getLog(){ return JSON.parse(safeStorage.getItem("progressLog")||"[]"); }
+function saveLog(log){ safeStorage.setItem("progressLog", JSON.stringify(log)); }
+function addEntry(){
+  const w=document.getElementById("inWeight").value;
+  const pu=document.getElementById("inPushups").value;
+  const su=document.getElementById("inSitups").value;
+  const run=document.getElementById("inRun").value;
+  if(!w && !pu && !su && !run){ return; }
+  const log=getLog();
+  log.unshift({date: todayDate().toISOString().slice(0,10), w, pu, su, run});
+  saveLog(log);
+  ["inWeight","inPushups","inSitups","inRun"].forEach(id=>document.getElementById(id).value="");
+  renderProgress();
+}
+function renderProgress(){
+  const log=getLog();
+  const latest = {w:null,pu:null,su:null,run:null};
+  for(const e of log){
+    if(latest.w===null && e.w) latest.w=e.w;
+    if(latest.pu===null && e.pu) latest.pu=e.pu;
+    if(latest.su===null && e.su) latest.su=e.su;
+    if(latest.run===null && e.run) latest.run=e.run;
+  }
+  document.getElementById("statGrid").innerHTML = `
+    <div class="statbox"><div class="v">${latest.w?latest.w+" lb":"—"}</div><div class="k">Latest weight (goal ≤183.6)</div></div>
+    <div class="statbox"><div class="v">${latest.pu?latest.pu+" / 50":"—"}</div><div class="k">Push-ups</div></div>
+    <div class="statbox"><div class="v">${latest.su?latest.su+" / 40":"—"}</div><div class="k">Sit-ups (1 min)</div></div>
+    <div class="statbox"><div class="v">${latest.run?latest.run:"—"}</div><div class="k">1.5-mile (goal ~12:00)</div></div>`;
+  const hist = document.getElementById("histList");
+  if(!log.length){ hist.innerHTML = `<p class="empty">No entries yet — log your first one above.</p>`; return; }
+  hist.innerHTML = log.slice(0,20).map(e=>{
+    const parts=[];
+    if(e.w) parts.push(e.w+" lb");
+    if(e.pu) parts.push(e.pu+" push-ups");
+    if(e.su) parts.push(e.su+" sit-ups");
+    if(e.run) parts.push(e.run+" run");
+    return `<div class="row"><span class="l">${e.date}</span><span class="r">${parts.join(" · ")}</span></div>`;
+  }).join("");
+}
+
+/* ---------- TABS ---------- */
+function showTab(name){
+  document.querySelectorAll(".tabpage").forEach(s=>s.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+}
+
+/* ---------- INIT ---------- */
+function init(){
+  const d = todayDate();
+  const phase = currentPhase(d);
+  renderHeader(d,phase);
+  renderPhaseCard(phase);
+  renderToday(d,phase);
+  renderNutritionToday(phase);
+  renderWeek(d,phase);
+  renderPlanStatics();
+  renderProgress();
+}
+try{
+  init();
+}catch(e){
+  document.getElementById("headerSub").textContent = "Something went wrong";
+  document.getElementById("phaseCard").innerHTML =
+    "<p><b>The app hit an error on load:</b></p><p style='font-family:monospace;font-size:12px;color:#B3261E'>"+
+    (e && e.message ? e.message : String(e)) + "</p>" +
+    "<p>Try reopening from Safari directly rather than a file preview if this persists.</p>";
+  console.error(e);
+}
+</script>
+</body>
+</html>
